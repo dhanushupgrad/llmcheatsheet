@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen AI vs RAG vs LLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .concept-box h3 {
+            margin-top: 0;
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        .icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .example {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .example strong {
+            color: #856404;
+        }
+
+        .analogy-box {
+            background: #e7f3ff;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .diagram-placeholder {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .diagram-placeholder img {
+            max-width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .formula {
+            background: #f0f8ff;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-weight: 500;
+            color: #2c5f2d;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .cons-box {
+            background: #ffe0e0;
+            border-left: 5px solid #e74c3c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .solution-box {
+            background: #e0f7e0;
+            border-left: 5px solid #4CAF50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Gen AI vs RAG vs LLM</h1>
+
+        <section>
+            <h2>Key Concepts Overview</h2>
+
+            <div class="concept-box">
+                <h3><span class="icon">🧠</span>1. LLM (Large Language Model)</h3>
+                <p>Generates text based only on what it learned during training. It's the core model that generates language.</p>
+                <div class="tag-list">
+                    <span class="tag">Reasoning</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">Generation</span>
+                    <span class="tag">Prompting</span>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong> GPT-4 / GPT-4o
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h3><span class="icon">📚</span>2. RAG (Retrieval-Augmented Generation)</h3>
+                <p>Combines LLMs with external knowledge retrieval for more accurate, up-to-date answers.</p>
+                <div class="formula">
+                    RAG = LLM + external knowledge retrieval
+                </div>
+                <p>It solves LLM's limitation of being "stuck" in its training data by pulling in external knowledge.</p>
+                <div class="tag-list">
+                    <span class="tag">Vector DB</span>
+                    <span class="tag">Search</span>
+                    <span class="tag">Documents</span>
+                    <span class="tag">APIs</span>
+                    <span class="tag">Context</span>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h3><span class="icon">🤖</span>3. GenAI (Generative AI)</h3>
+                <p>A broader category that includes LLMs, RAG, and other generative models (text, images, audio, code).</p>
+                <div class="tag-list">
+                    <span class="tag">Apps</span>
+                    <span class="tag">Agents</span>
+                    <span class="tag">Tools</span>
+                    <span class="tag">Images</span>
+                    <span class="tag">Audio</span>
+                    <span class="tag">Video</span>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong> ChatGPT Application
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Circular Diagram Structure</h2>
+            <div class="diagram-placeholder">
+                <img src="./assets/GenAI_vs_RAG_LLM.png" alt="Gen AI vs RAG vs LLM Diagram">
+            </div>
+
+            <h3>How to Place Them in Your Circular Diagram</h3>
+            
+            <div class="concept-box">
+                <h4>1. GenAI (outer circle)</h4>
+                <p><strong>Add label:</strong> Orchestration & Frameworks</p>
+                <p><strong>Place:</strong> LlamaIndex, LangChain, Semantic Kernel</p>
+            </div>
+
+            <div class="concept-box">
+                <h4>2. LLM (middle circle)</h4>
+                <p>GPT, Claude, LLaMA</p>
+            </div>
+
+            <div class="concept-box">
+                <h4>3. RAG (inner circle)</h4>
+                <p>Vector DB, Search, Document Retrieval</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Simple Analogy (Memorable)</h2>
+            <div class="analogy-box">
+                <h3>🚗 The Car Analogy:</h3>
+                <ul>
+                    <li><strong>GenAI</strong> → The car</li>
+                    <li><strong>LLM</strong> → Engine</li>
+                    <li><strong>RAG</strong> → Fuel + GPS</li>
+                    <li><strong>LangChain / LlamaIndex</strong> → Transmission & controls</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>LLM Definition</h2>
+            <p><strong>LLM stands for Large Language Model.</strong></p>
+            <p>An LLM is an artificial intelligence model trained on massive amounts of text data so it can:</p>
+            <ol>
+                <li>Understand language</li>
+                <li>Generate responses</li>
+                <li>Reason over information</li>
+                <li>Perform tasks like Q&A, summarization, translation, etc.</li>
+            </ol>
+
+            <h3>Context Window</h3>
+            <p>In LLM, there is a <span class="highlight">context window</span>, which is the maximum number of tokens that you can provide to it at one time.</p>
+            
+            <div class="example">
+                <strong>Example:</strong> "The Cat sat on the mat"
+                <p>Let us assume, we have 6 tokens in the above sentence</p>
+                <p>GPT-4o can process <strong>128K tokens</strong> at a time</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Cons / Limitations of LLMs</h2>
+
+            <div class="cons-box">
+                <h3>1. Limited to training data timeframe</h3>
+                <p>An LLM only knows information up to the time it was trained. If you ask about events or updates after its training cutoff, it may:</p>
+                <ul>
+                    <li><strong>Knowledge cutoff:</strong> It only knows information up to its last training date</li>
+                    <li>Guess (hallucinate)</li>
+                    <li>Or say it doesn't know</li>
+                </ul>
+            </div>
+
+            <div class="cons-box">
+                <h3>2. LLMs can hallucinate</h3>
+                <p>LLMs sometimes produce answers that sound correct but are factually wrong because they rely only on patterns learned during training.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>RAG (Retrieval-Augmented Generation) – Definition</h2>
+            <p><strong>RAG is an AI technique that combines a Large Language Model (LLM) with an external knowledge retrieval system to produce accurate, up-to-date, and domain-specific answers.</strong></p>
+
+            <h3>In simple terms:</h3>
+            <p>RAG retrieves relevant information from your documents or database, and then the LLM uses that information to generate the final answer.</p>
+
+            <div class="solution-box">
+                <h3>How RAG solves this?</h3>
+                <p>RAG retrieves relevant, domain-specific, up-to-date information from your document base, it injects the retrieved content into the LLM as context, so the model answers based on real data, not guesses (<strong>no Hallucinations</strong>).</p>
+                <p>RAG retrieves real, up-to-date, domain-specific documents (manuals, SOPs, logs, etc.) and provides them to the LLM.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

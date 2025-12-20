@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformers in LLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .concept-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .important-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .note-box {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4CAF50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .formula-box {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .formula-box .formula-title {
+            color: #2c5f2d;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .formula-content {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #2c5f2d;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .advanced-box {
+            background: #f3e5f5;
+            border-left: 5px solid #9c27b0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .advanced-box h4 {
+            color: #9c27b0;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .type-card h4 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .operations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .operation-card {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .diagram-placeholder {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .diagram-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .inline-code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #c7254e;
+        }
+
+        strong {
+            color: #667eea;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #ccc;
+            padding-left: 15px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .type-grid, .operations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Transformers in LLM</h1>
+
+        <section>
+            <h2>What is a Transformer</h2>
+            
+            <div class="intro-box">
+                <p><strong>A transformer is a neural network that understands relationships between words using attention.</strong></p>
+                <p style="margin-top: 15px;">The Transformer was introduced in Google's landmark 2017 paper, <span class="highlight">"Attention Is All You Need."</span></p>
+            </div>
+
+            <div class="concept-box">
+                <h3>Revolutionary Idea</h3>
+                <p>Its revolutionary idea was to move away from older sequential models (like RNNs and LSTMs) that processed text one word at a time.</p>
+                <p style="margin-top: 10px;"><strong>Transformer architecture uses an attention mechanism to process an entire sentence at once instead of reading words one by one.</strong></p>
+            </div>
+
+            <h3>Why Important:</h3>
+            <ul>
+                <li>Overcomes RNN/LSTM limitations (vanishing gradients, sequential bottlenecks)</li>
+                <li>Enables parallel training → faster and more scalable</li>
+                <li>Forms the backbone of modern LLMs (GPT, BERT, etc.)</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Note:</strong> While adding more memory cells in LSTMs (Long Short-Term Memory networks) helped address the vanishing gradient issue, they still process words one by one. This sequential processing means LSTMs can't analyze an entire sentence at once.
+            </div>
+
+            <div class="important-box">
+                <h3>The key problem it solved:</h3>
+                <p><strong>Understanding context and long-range dependencies in text.</strong></p>
+                
+                <div class="example-box" style="margin-top: 15px;">
+                    <strong>Example:</strong>
+                    <p>In the sentence "The cat, which had been hiding under the dusty couch for hours, finally pounced on the toy," the word <span class="highlight">"pounced"</span> is strongly related to <span class="highlight">"cat"</span>, even though they are far apart. Older models struggled with this.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Type of Transformers</h2>
+            
+            <div class="type-grid">
+                <div class="type-card">
+                    <h4>1. Encoder</h4>
+                    <p>Used in BERT</p>
+                </div>
+                <div class="type-card">
+                    <h4>2. Decoder</h4>
+                    <p>Used in GPT</p>
+                </div>
+                <div class="type-card">
+                    <h4>3. Encoder-Decoder</h4>
+                    <p>Used in translation models</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Key Operations in Transformer</h2>
+            
+            <div class="operations-grid">
+                <div class="operation-card">1. Self-attention</div>
+                <div class="operation-card">2. Feed-forward layers</div>
+                <div class="operation-card">3. Residual connections</div>
+                <div class="operation-card">4. Layer normalization</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. Self-Attention (The "Killer Feature")</h2>
+            
+            <div class="intro-box">
+                <h3>Goal:</h3>
+                <p>Let each token "look at" all other tokens in the sequence to decide which ones are most relevant.</p>
+                <p style="margin-top: 15px;"><strong>This is the heart of the Transformer.</strong> It allows each word in a sequence to interact with every other word, simultaneously.</p>
+            </div>
+
+            <h3>Key Action:</h3>
+            <ol>
+                <li>While encoding the word, it computes a weighted "attention score" for every word pair, and it decides how much focus to place on another words</li>
+                <li><strong>Example:</strong> For the word "bank" in "I deposited money at the river bank," the self-attention mechanism would heavily weigh "money" to choose the financial meaning and heavily weigh "river" to choose the geographical meaning. It dynamically understands context.</li>
+            </ol>
+
+            <h3>Mechanism:</h3>
+            <ul>
+                <li>Each input embedding is projected into <strong>Query (Q)</strong>, <strong>Key (K)</strong>, and <strong>Value (V)</strong> vectors</li>
+                <li>Attention score = similarity between Query and Key → tells how much focus one token should give another</li>
+                <li>Weighted sum of Values produces the new representation</li>
+            </ul>
+
+            <div class="formula-box">
+                <div class="formula-title">Formula:</div>
+                <div class="formula-content">
+                    Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d<sub>k</sub>) V
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>Intuition:</h4>
+                <p>In a sentence like "The cat sat on the mat", the word "cat" attends strongly to "sat" and "mat", less to "the".</p>
+                <p style="margin-top: 10px;">This builds contextual meaning dynamically.</p>
+            </div>
+
+            <div class="diagram-placeholder">
+                <img src="/assets/llm-transformer.png" alt="Self-Attention Mechanism Diagram">
+            </div>
+
+            <div class="advanced-box">
+                <h4>Advanced (Resolve timing):</h4>
+                
+                <h4>A. Multi-head Attention</h4>
+                <p>Instead of one attention mechanism, transformers use <strong>multiple attention heads</strong> running in parallel. Each head captures different relationships or patterns in the data, enriching the model's understanding.</p>
+                <p style="margin-top: 10px;">Multiple sets of Q/K/V capture different relationships (syntax, semantics, long-range dependencies).</p>
+                
+                <h4 style="margin-top: 20px;">B. Positional Encoding</h4>
+                <p>Unlike RNNs, transformers lack an inherent understanding of word order since they process data in parallel.</p>
+                <p style="margin-top: 10px;"><strong>Positional Encoding</strong> is a technique that adds information about the position of each token in the sequence to the input embeddings.</p>
+                <p style="margin-top: 10px;">This helps transformers to understand the relative or absolute position of tokens which is important for differentiating between words in different positions and capturing the structure of a sentence.</p>
+                <p style="margin-top: 10px;"><em>Without positional encoding, transformers would struggle to process sequential data effectively.</em></p>
+                
+                <div class="formula-box" style="margin-top: 15px;">
+                    <div class="formula-title">Positional Encoding Formulas:</div>
+                    <div style="text-align: left; padding: 10px;">
+                        <p><strong>For even-indexed dimensions:</strong></p>
+                        <div class="formula-content">
+                            PE<sub>(pos, 2i)</sub> = sin(pos / 10000<sup>2i/d<sub>model</sub></sup>)
+                        </div>
+                        
+                        <p style="margin-top: 15px;"><strong>For odd-indexed dimensions:</strong></p>
+                        <div class="formula-content">
+                            PE<sub>(pos, 2i+1)</sub> = cos(pos / 10000<sup>2i/d<sub>model</sub></sup>)
+                        </div>
+                        
+                        <p style="margin-top: 15px;"><strong>Where:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>d<sub>model</sub></strong> = embedding dimension size</li>
+                            <li><strong>pos</strong> = position index in the sequence</li>
+                            <li><strong>i</strong> = dimension index</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Position-wise Feed-Forward Networks</h2>
+            
+            <div class="concept-box">
+                <p>The Feed-Forward Networks consist of <strong>two linear transformations</strong> with a <strong>ReLU activation</strong>.</p>
+                <p style="margin-top: 10px;">Applied independently to each position (same weights for all tokens) in the sequence.</p>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-title">Formula:</div>
+                <div class="formula-content">
+                    FFN(x) = max(0, xW<sub>1</sub> + b<sub>1</sub>)W<sub>2</sub> + b<sub>2</sub>
+                </div>
+            </div>
+
+            <div class="advanced-box">
+                <strong>Advanced:</strong> Variants use activation functions like <strong>GELU</strong> (used in BERT) for smoother gradients.
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Residual Connection</h2>
+            
+            <div class="intro-box">
+                <h3>Goal:</h3>
+                <p>Prevent vanishing gradients and stabilize training.</p>
+                
+                <h3 style="margin-top: 15px;">Mechanism:</h3>
+                <p>Add the input of a layer back to its output.</p>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-title">Formula:</div>
+                <div class="formula-content">
+                    y = x + Layer(x)
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>Intuition:</h4>
+                <ul>
+                    <li>Acts like a "shortcut" path</li>
+                    <li>Ensures the model can always fall back to the identity function if deeper transformations don't help</li>
+                </ul>
+            </div>
+
+            <div class="diagram-placeholder">
+                <img src="/assets/positional_encoding_in_transformer.png" alt="Residual Connection Diagram">
+            </div>
+
+            <div class="advanced-box">
+                <strong>Advanced:</strong> Residuals are critical for very deep networks (transformers often have dozens of layers). Without them, training would collapse.
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Layer Normalization</h2>
+            
+            <div class="intro-box">
+                <h3>Goal:</h3>
+                <p>Normalize activations to stabilize training and improve convergence.</p>
+                
+                <h3 style="margin-top: 15px;">Mechanism:</h3>
+                <p>For each token's hidden state, normalize across its features (mean = 0, variance = 1).</p>
+                <p style="margin-top: 10px;">Then scale and shift with trainable parameters.</p>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-title">Formula:</div>
+                <div class="formula-content">
+                    LayerNorm(x) = γ · (x - μ) / √(σ² + ε) + β
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>Intuition:</h4>
+                <ul>
+                    <li>Keeps values in a stable range, preventing exploding/vanishing activations</li>
+                    <li>Especially important because attention outputs can vary widely</li>
+                </ul>
+            </div>
+
+            <div class="advanced-box">
+                <h4>Advanced:</h4>
+                <ul>
+                    <li>Transformers often use <strong>Pre-Norm</strong> (apply normalization before attention/FFN) for better gradient flow</li>
+                    <li><strong>Contrast with BatchNorm:</strong> LayerNorm works per token, not across a batch</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

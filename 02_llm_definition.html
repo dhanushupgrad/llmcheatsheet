@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to LLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 25px 0;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .definition-box p {
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .concept-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4CAF50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-box strong {
+            color: #2c5f2d;
+            font-size: 1.1em;
+        }
+
+        .challenge-box {
+            background: #ffe0e0;
+            border-left: 5px solid #e74c3c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h3 {
+            color: #c0392b;
+            margin-top: 0;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .example-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .formula-box {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .formula-box .formula-title {
+            color: #2c5f2d;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .formula-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #2c5f2d;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        .prediction-box {
+            background: #fff9e6;
+            border: 2px dashed #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .prediction-box .sentence {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .prediction-box .blank {
+            color: #667eea;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .predictions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .prediction-item {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .architecture-card {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .architecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .architecture-card h4 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+        }
+
+        .architecture-card .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .status-current {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-older {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .status-vision {
+            background: #2196F3;
+            color: white;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .diagram-placeholder {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .diagram-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .layer-list {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .layer-list ol {
+            margin: 0;
+        }
+
+        .layer-list li {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .examples-grid, .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .predictions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Introduction to LLM</h1>
+
+        <section>
+            <h2>LLM Definition</h2>
+            
+            <div class="definition-box">
+                <p><strong>An LLM (Large Language Model) is an AI system trained on massive text data to understand and generate human-like language.</strong></p>
+                <p style="margin-top: 15px;">A Language Model (LM) predicts the next token given previous tokens.</p>
+                <p style="margin-top: 15px;">It predicts the next word in a sentence — but at scale and with deep understanding.</p>
+            </div>
+
+            <h3>Popular Examples:</h3>
+            <div class="examples-grid">
+                <div class="example-card">ChatGPT</div>
+                <div class="example-card">Gemini</div>
+                <div class="example-card">Claude</div>
+                <div class="example-card">Llama</div>
+            </div>
+
+            <div class="challenge-box">
+                <h3>Challenges:</h3>
+                <ul>
+                    <li><strong>Hallucinations:</strong> Generating false information</li>
+                    <li><strong>Bias:</strong> Reflecting biases from training data</li>
+                    <li><strong>Compute cost:</strong> High computational requirements</li>
+                    <li><strong>Interpretability:</strong> Difficulty understanding model decisions</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>How LLMs Work</h2>
+            
+            <div class="concept-box">
+                <h3>Core Concepts:</h3>
+                <ul>
+                    <li>LLMs convert text into numbers called <span class="highlight">tokens</span></li>
+                    <li>They use neural networks with <span class="highlight">billions of parameters</span></li>
+                    <li>They learn patterns from the internet, books, research papers, etc.</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <strong>Example:</strong>
+                
+                <div class="prediction-box">
+                    <div class="sentence">"The cat sat on the <span class="blank">___</span>"</div>
+                    <p><strong>Model predicts (with probabilities):</strong></p>
+                    <div class="predictions">
+                        <div class="prediction-item">mat</div>
+                        <div class="prediction-item">sofa</div>
+                        <div class="prediction-item">floor</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagram-placeholder">
+                <img src="default.png" alt="LLM Token Prediction Diagram">
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-title">Mathematical Representation:</div>
+                <div class="formula-content">
+                    P(w₁, w₂, ..., wₙ) = ∏ P(wᵢ | w₁...wᵢ₋₁)
+                </div>
+                <p style="margin-top: 15px; color: #555;">
+                    The probability of a sequence is the product of conditional probabilities of each word given all previous words
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>How Do Neural Networks Work?</h2>
+            
+            <div class="info-box">
+                <p><strong>They're like a system of "virtual neurons" connected by weights.</strong></p>
+                <p style="margin-top: 10px;">During training, the network adjusts weights so it makes fewer mistakes.</p>
+            </div>
+
+            <h3>Neural Network Structure:</h3>
+            <div class="layer-list">
+                <ol>
+                    <li>Input layer</li>
+                    <li>Hidden layers</li>
+                    <li>Output layer</li>
+                </ol>
+            </div>
+
+            <div class="diagram-placeholder">
+                <img src="default.png" alt="Neural Network Architecture Diagram">
+            </div>
+
+            <div class="concept-box">
+                <h3>Learning Process:</h3>
+                <p>Learning happens via <span class="highlight">backpropagation</span> + <span class="highlight">gradient descent</span>.</p>
+                <p style="margin-top: 10px;">The network iteratively adjusts its weights to minimize prediction errors.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>NLP Model Architectures</h2>
+            
+            <p>NLP models use deep architectures, which have evolved over time:</p>
+
+            <div class="architecture-grid">
+                <div class="architecture-card">
+                    <h4>1. RNNs</h4>
+                    <p>Recurrent Neural Networks</p>
+                    <span class="status status-older">Older</span>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>2. CNNs</h4>
+                    <p>Convolutional Neural Networks</p>
+                    <span class="status status-vision">For Vision</span>
+                </div>
+                
+                <div class="architecture-card">
+                    <h4>3. Transformers</h4>
+                    <p>Attention-based Architecture</p>
+                    <span class="status status-current">Current Standard</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>Performance Optimizations:</h3>
+                <p>Optimizers like <strong>AdamW</strong>, <strong>learning rate scheduling</strong>, and <strong>batch normalization</strong> help improve performance.</p>
+                <p style="margin-top: 10px;"><strong>Key Advantage:</strong> Transformers enable <span class="highlight">parallel training</span> → much faster than RNNs.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Why Transformers?</h2>
+            
+            <div class="concept-box">
+                <h3>Advantages over RNNs:</h3>
+                <ul>
+                    <li><strong>Parallel Processing:</strong> Can process entire sequences simultaneously</li>
+                    <li><strong>Better Context Understanding:</strong> Attention mechanism captures long-range dependencies</li>
+                    <li><strong>Faster Training:</strong> Significantly reduced training time</li>
+                    <li><strong>Scalability:</strong> Can be scaled to billions of parameters efficiently</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

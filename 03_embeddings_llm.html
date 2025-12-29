@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedding Techniques in NLP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        table tr:hover {
+            background: #e9ecef;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #17a2b8;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #0c5460;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .pros,
+        .cons {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .cons {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .pros h4,
+        .cons h4 {
+            margin-bottom: 10px;
+        }
+
+        .pros h4 {
+            color: #155724;
+        }
+
+        .cons h4 {
+            color: #721c24;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .output {
+            background: #e8f5e9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Categorization of Embedding</h1>
+
+        <div class="section">
+            <h2>a. One-Hot Encoding</h2>
+            <p>In this method, each word in the vocabulary is represented as a "dummy" binary vector. The length of the
+                vector is equal to the total number of unique words in your vocabulary.</p>
+
+            <div class="example">
+                <h4>Example:</h4>
+                <p><strong>Vocabulary:</strong> [cat, dog, I, love] (4 unique words)<br>
+                    <strong>Vector size:</strong> 4
+                </p>
+
+                <table>
+                    <tr>
+                        <th>Word</th>
+                        <th>Vector</th>
+                    </tr>
+                    <tr>
+                        <td>I</td>
+                        <td>[0, 0, 1, 0]</td>
+                    </tr>
+                    <tr>
+                        <td>love</td>
+                        <td>[0, 0, 0, 1]</td>
+                    </tr>
+                    <tr>
+                        <td>cat</td>
+                        <td>[1, 0, 0, 0]</td>
+                    </tr>
+                    <tr>
+                        <td>dog</td>
+                        <td>[0, 1, 0, 0]</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>Note:</strong> This method is simple but creates very "sparse" matrices (lots of zeros) and
+                doesn't capture the relationship between words (e.g., "cat" and "dog" are both animals, but their
+                vectors are mathematically unrelated).
+            </div>
+
+            <pre><code>from sklearn.feature_extraction.text import CountVectorizer
+
+# Sample text data
+corpus = ["I love cat", "I love dog"]
+
+# binary=True makes it One-Hot (presence/absence only)
+vectorizer = CountVectorizer(binary=True)
+X = vectorizer.fit_transform(corpus)
+
+print(vectorizer.get_feature_names_out())
+print(X.toarray())</code></pre>
+
+            <div class="output">
+                ['cat' 'dog' 'love']
+                [[1 0 1]
+                [0 1 1]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>b. Bag of Words (BoW)</h2>
+            <p>BoW describes the occurrence of words within a document. It ignores grammar and word order but keeps
+                track of frequency. It turns text like sentence, paragraph or document into a collection of words and
+                counts how often each word appears but ignoring the order of the words.</p>
+
+            <h3>How the BoW Model Works</h3>
+            <ul>
+                <li><strong>Tokenization:</strong> The text is broken down into individual words or "tokens".</li>
+                <li><strong>Vocabulary Creation:</strong> A list of all unique words from the entire set of documents
+                    (corpus) is created. Each unique word is assigned a unique index.</li>
+                <li><strong>Vectorization:</strong> Each document is then converted into a numerical vector of a fixed
+                    length (equal to the size of the vocabulary). The value at each position in the vector represents
+                    the frequency (count) of the corresponding word from the vocabulary within that document.</li>
+            </ul>
+
+            <h3>Bag of Words: Step-by-Step Example</h3>
+
+            <div class="example">
+                <h4>1. Collect the corpus (all sentences)</h4>
+                <p>Sentences:</p>
+                <ul>
+                    <li>He is a good boy</li>
+                    <li>She is a good girl</li>
+                    <li>Boy and girl are good</li>
+                </ul>
+                <p><strong>Goal:</strong> Build a simple numeric representation that captures word presence/counts
+                    across sentences.</p>
+            </div>
+
+            <div class="example">
+                <h4>2. Normalize text (basic preprocessing)</h4>
+                <p><strong>Lowercasing:</strong> Convert all text to lowercase to avoid treating "Boy" and "boy" as
+                    different.</p>
+                <p><strong>Result:</strong></p>
+                <ul>
+                    <li>he is a good boy</li>
+                    <li>she is a good girl</li>
+                    <li>boy and girl are good</li>
+                </ul>
+            </div>
+
+            <div class="example">
+                <h4>3. Remove stopwords (optional but common)</h4>
+                <p><strong>Why:</strong> Stopwords (e.g., "he", "she", "is", "a", "and", "are") add little semantic
+                    value for many tasks.</p>
+                <p><strong>After removal:</strong></p>
+                <ul>
+                    <li>S1 → good boy</li>
+                    <li>S2 → good girl</li>
+                    <li>S3 → boy girl good</li>
+                </ul>
+            </div>
+
+            <div class="example">
+                <h4>4. Build the vocabulary</h4>
+                <p>Extract unique tokens from the corpus: {good, boy, girl}</p>
+                <p>Compute document-level frequencies (optional check):</p>
+                <ul>
+                    <li>good: 3</li>
+                    <li>boy: 2</li>
+                    <li>girl: 2</li>
+                </ul>
+                <p><strong>Note:</strong> This is just for understanding; BoW uses the vocabulary as columns.</p>
+            </div>
+
+            <div class="example">
+                <h4>5. Choose the representation (binary or counts)</h4>
+                <ul>
+                    <li><strong>Binary BoW:</strong> 1 if the word appears in the sentence, else 0.</li>
+                    <li><strong>Count BoW:</strong> Number of times the word appears in the sentence.</li>
+                </ul>
+            </div>
+
+            <div class="example">
+                <h4>6. Create the BoW matrix</h4>
+                <p><strong>Columns:</strong> good, boy, girl<br>
+                    <strong>Rows:</strong> S1, S2, S3
+                </p>
+                <p><strong>Binary representation:</strong></p>
+                <ul>
+                    <li>S1 (good boy): [1, 1, 0]</li>
+                    <li>S2 (good girl): [1, 0, 1]</li>
+                    <li>S3 (boy girl good): [1, 1, 1]</li>
+                </ul>
+            </div>
+
+            <div class="example">
+                <h4>7. Connect to labels (supervised setup)</h4>
+                <p><strong>Outputs (o/p):</strong></p>
+                <ul>
+                    <li>S1 → 1</li>
+                    <li>S2 → 1</li>
+                    <li>S3 → 1</li>
+                </ul>
+                <p><strong>Note:</strong> Labels are provided externally (e.g., sentiment, class). BoW is the input
+                    feature vector; labels are the target.</p>
+            </div>
+
+            <pre><code>from sklearn.feature_extraction.text import CountVectorizer
+
+corpus = ["He is a good boy", "She is a good girl", "Boy and girl are good"]
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(corpus)
+
+print(X.toarray())
+# Result: [[2, 1], [1, 2]] (Counts how many times 'cat' and 'dog' appear)</code></pre>
+
+            <div class="output">
+                [[0 0 1 0 1 1 1 0]
+                [0 0 0 1 1 0 1 1]
+                [1 1 1 1 1 0 0 0]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>c. TF-IDF (Term Frequency-Inverse Document Frequency)</h2>
+            <p>TF-IDF goes a step further than BoW. It penalizes words that appear too frequently across all documents
+                (like "the" or "is") and rewards words that are unique to a specific document.</p>
+            <p>We use TfidfVectorizer, which automatically calculates the importance of words based on their frequency
+                across the whole dataset.</p>
+
+            <ul>
+                <li><strong>TF (Term Frequency):</strong> How often a word appears in a document.</li>
+                <li><strong>IDF (Inverse Document Frequency):</strong> How rare a word is across the entire set of
+                    documents.</li>
+            </ul>
+
+            <p>In our example: The word "I" appears in every sentence, so its TF-IDF score will be low. The word "cat"
+                only appears in sentence 1, so it will have a higher score for that sentence. This helps the model
+                identify the "signature" words of a text.</p>
+
+            <div class="formula">
+                <strong>The formula for TF-IDF is:</strong><br><br>
+                TF = (Number of repetitions of word in sentence) / (Number of words in sentence)<br><br>
+                IDF = log<sub>e</sub>((Number of Sentences) / (Number of Sentences Containing the Word))<br><br>
+                TF-IDF<sub>i,j</sub> = TF<sub>i,j</sub> × log(N / df<sub>i</sub>)
+            </div>
+
+            <img src="https://github.com/dhanushupgrad/ModelDiagram/blob/main/TI-IDF.png?raw=true"
+                alt="TF-IDF Illustration">
+
+            <pre><code>from sklearn.feature_extraction.text import TfidfVectorizer
+
+corpus = ["He is a good boy", "She is a good girl", "Boy and girl are good"]
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(corpus)
+
+print(tfidf_matrix.toarray())
+# Notice how 'love' and 'I' get lower scores because they are common to both.</code></pre>
+
+            <div class="output">
+                [[0. 0. 0.4804584 0. 0.37311881 0.63174505
+                0.4804584 0. ]
+                [0. 0. 0. 0.4804584 0.37311881 0.
+                0.4804584 0.63174505]
+                [0.53409337 0.53409337 0.40619178 0.40619178 0.31544415 0.
+                0. 0. ]]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>d. Embedding</h2>
+            <p>Embedding is a representation of complex data (words, images, user) as dense numeric vector in continuous
+                space. These vectors compare the meaning and relationships so that similar items can place close
+                together, while dissimilar ones place farther apart.</p>
+
+            <p><strong>Purpose:</strong> It makes data easier for machine learning models to process by capturing
+                semantic meaning and relationship between items.</p>
+
+            <h3>Examples of use:</h3>
+            <ul>
+                <li><strong>NLP:</strong> Words like "king" and "queen" are close in vector space, while "king" and
+                    "car" are far apart.</li>
+                <li><strong>Recommender systems:</strong> Users and products are embedded so that similar preferences
+                    cluster together.</li>
+                <li><strong>Computer vision:</strong> Images are embedded into vectors that capture visual similarity.
+                </li>
+            </ul>
+            <h3>Word Embeddings:</h3>
+
+            <p>It is NLP for obtaining vector representation of words. These vectors capture information about meaning
+                of the word based on surrounding of words. The Word2Vec algorithm estimates these representations by
+                modeling text into large corpus (input).</p>
+
+            <p>Once trained, such models can detect the synonymous words or suggest additional words for a partial
+                sentence. It was developed by Tomas Mikolov and colleagues at Google and published in 2013.</p>
+
+            <div class="note">
+                <strong>Note:</strong> Here, we will create for each word in vocabulary (corpus) vector dimension based
+                on feature representation.
+            </div>
+
+            <h3>1. Word2Vec Technique:</h3>
+            <p>There are two types of Word2Vec algorithms:</p>
+            <ul>
+                <li>CBoW (Continuous Bag of Words)</li>
+                <li>Skip-gram</li>
+            </ul>
+
+            <img src="https://github.com/dhanushupgrad/ModelDiagram/blob/main/cbow&skipgram.png?raw=true"
+                alt="Word2Vec Types">
+        </div>
+
+        <div class="section">
+            <h3>a. Cosine Similarity</h3>
+            <p>Cosine Similarity is a metric used to measure how similar two vectors are, regardless of their size. It
+                measures the cosine of the angle between two vectors projected in a multi-dimensional space.</p>
+
+            <div class="formula">
+                <strong>Formula:</strong><br><br>
+                distance = 1 - cosine similarity<br><br>
+                where;<br><br>
+                cosine similarity = cos(Θ)
+            </div>
+
+            <img src="https://miro.medium.com/v2/resize:fit:2000/format:webp/1*s2B76kFUmS7OK99p5aDcHg.png"
+                alt="Cosine Similarity">
+        </div>
+
+        <div class="section">
+            <h3>1. CBoW (Continuous Bag of Words)</h3>
+            <p>CBOW tries to guess a word from its surrounding words. CBoW trains the dataset in ANN which is a fully
+                connected neural network, where window_size decides the number of features representation.</p>
+
+            <div class="example">
+                <h4>Example sentence: "I love deep learning models"</h4>
+                <p>If the window size = 2, and target = "deep"</p>
+                <ul>
+                    <li><strong>Input (context):</strong> love, learning</li>
+                    <li><strong>Output:</strong> deep</li>
+                </ul>
+            </div>
+
+            <p>After that, ANN takes place for training dataset based on forward propagation and then minimizing loss
+                function by back propagation.</p>
+
+            <img src="https://github.com/dhanushupgrad/ModelDiagram/blob/main/Cow%20working%20process.png?raw=true"
+                alt="CBoW Architecture">
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>Pros</h4>
+                    <ul>
+                        <li>Faster training</li>
+                        <li>Works well for frequent words</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>Cons</h4>
+                    <ul>
+                        <li>Loses word order</li>
+                        <li>Less effective for rare words</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>b. Skip-gram</h3>
+            <p>Skip-gram does the opposite of CBOW. Given a word, predict its surrounding words.</p>
+
+            <div class="example">
+                <h4>Example sentence: "I love deep learning models"</h4>
+                <ul>
+                    <li><strong>Input (center word):</strong> deep</li>
+                    <li><strong>Output (context):</strong> love, learning</li>
+                </ul>
+            </div>
+
+
+            <h3>CBOW vs Skip-gram</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>CBOW</th>
+                    <th>Skip-gram</th>
+                </tr>
+                <tr>
+                    <td>Predicts</td>
+                    <td>Target word</td>
+                    <td>Context words</td>
+                </tr>
+                <tr>
+                    <td>Input size</td>
+                    <td>Multiple words</td>
+                    <td>One word</td>
+                </tr>
+                <tr>
+                    <td>Speed</td>
+                    <td>Faster</td>
+                    <td>Slower</td>
+                </tr>
+                <tr>
+                    <td>Rare words</td>
+                    <td>Weaker</td>
+                    <td>Stronger</td>
+                </tr>
+                <tr>
+                    <td>Best for</td>
+                    <td>Large datasets</td>
+                    <td>Small / sparse data</td>
+                </tr>
+            </table>
+
+            <pre><code>!pip install gensim</code></pre>
+
+            <pre><code>
+                from gensim.models import Word2Vec
+
+sentences = [
+    ["i", "love", "deep", "learning"],
+    ["deep", "learning", "is", "powerful"],
+    ["i", "love", "nlp"]
+]
+
+# CBOW model (sg=0)
+cbow_model = Word2Vec(
+    sentences,
+    vector_size=100,
+    window=2,
+    min_count=1,
+    sg=0  # sg=0 → CBOW
+)
+
+# Skip-gram model (sg=1)
+skipgram_model = Word2Vec(
+    sentences,
+    vector_size=100,
+    window=2,
+    min_count=1,
+    sg=1  # sg=1 → Skip-gram
+)
+
+
+print("CBOW vector for 'deep':",cbow_model.wv.most_similar("deep"))
+# print(cbow_model.wv['deep'])
+
+print("Skip-gram vector for 'deep':", skipgram_model.wv.most_similar("deep"))
+# print(skipgram_model.wv['deep'])
+
+            </code></pre>
+        </div>
+    </div>
+</body>
+
+</html>
